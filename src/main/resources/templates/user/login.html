@@ -31,7 +31,7 @@
             </div>
         </header>
         <main>
-            <form id="register-prof" method="post" action="${pageContext.request.contextPath}/users/login">
+            <form id="register-prof" method="get" th:action="@{/users/login}">
                 <div class="input-block">
                     <label for="email">E-mail: </label>
                     <input type="text" name="email" value="" required />

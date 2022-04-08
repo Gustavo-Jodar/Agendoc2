@@ -1,6 +1,12 @@
 package br.ufscar.dc.dsw.controller;
 
+import br.ufscar.dc.dsw.dao.daoCliente;
 import br.ufscar.dc.dsw.dao.daoProfissional;
+import br.ufscar.dc.dsw.dao.daoUser;
+
+import br.ufscar.dc.dsw.security.UsuarioDetails;
+import br.ufscar.dc.dsw.security.UsuarioDetailsServiceImpl;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +16,8 @@ import br.ufscar.dc.dsw.domain.User;
 import br.ufscar.dc.dsw.util.Formata;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +30,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class userController {
 
     @Autowired
+    daoCliente daoCliente;
+
+    @Autowired
     daoProfissional daoProfissional;
+
+    @Autowired
+    daoUser daoUser;
+
+    @Autowired
+    UserDetailsService userDetailsService;
 
     @GetMapping("/")
     public String index(Model model) {
@@ -63,7 +80,7 @@ public class userController {
 
         // tem que verificar se o usuario já está logado antes de fazer isso
         // pra mandar ele pra página correta
-        return "redirect:/users/showProfissionais";
+        return "redirect:/aux/";
     }
 
     @GetMapping("/showLogin")
@@ -71,30 +88,24 @@ public class userController {
         return "user/login.html";
     }
 
-    @GetMapping("/verificaEstaLogado/{cpf}")
-    public String verificaEstaLogado(@PathVariable("cpf") String cpf, Model model) {
-        /*
-         * // checa se já tem um usuário logado
-         * User usuarioLogado = (User)
-         * request.getSession().getAttribute("usuarioLogado");
-         * 
-         * if (usuarioLogado != null) {
-         * // se ja tiver logado abre link pra marcar consulta.
-         * String cpf_profissional = request.getParameter("cpf");
-         * Profissional profissional_escolhido =
-         * daoProfissional.getByCpf(cpf_profissional);
-         * request.setAttribute("profissionalEscolhido", profissional_escolhido);
-         * RequestDispatcher dispatcher =
-         * request.getRequestDispatcher("/cliente/appointment.jsp");
-         * dispatcher.forward(request, response);
-         * } else {
-         * RequestDispatcher dispatcher =
-         * request.getRequestDispatcher("/user/login.jsp");
-         * dispatcher.forward(request, response);
-         * }
-         */
-        return "redirect:/users/showLogin";
+    @GetMapping("/login")
+    public String login(Model model, @RequestParam("email") String email, @RequestParam("senha") String senha) {
+        // User user = daoUser.findByEmail(email);
+        User user = daoUser.findByEmail(email);
+        if (user != null) {
 
+            if (user.getSenha().equals(senha)) {
+                String papel = user.getPapel();
+                if (papel.replaceAll("\\P{L}+", "").equals("ADMIN"))
+                    return "redirect:/admins";
+                if (papel.replaceAll("\\P{L}+", "").equals("CLIENTE"))
+                    return "redirect:clientes";
+                if (papel.replaceAll("\\P{L}+", "").equals("PROFISSIONAL"))
+                    return "redirect:/profissional";
+            }
+        }
+
+        return "/users";
     }
 
 }

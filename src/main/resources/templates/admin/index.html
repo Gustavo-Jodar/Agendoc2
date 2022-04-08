@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Agendoc</title>
+</head>
+
+<body>
+    <h1 th:text="#{admin_page.text}"></h1>
+    <p th:text="#{welcome.text}"> Admin
+    </p>
+    <div align="center">
+        <ul>
+            <li>
+                <a th:href="@{/admins/listaClientes}" th:text="#{client_crud.text}"></a>
+            </li>
+            <li>
+                <a th:href="@{/admins/listaProfissionais}" th:text="#{professional_crud.text}"></a>
+            </li>
+            <li>
+                <a th:href="@{/users/logout}" th:text="#{logout.text}"></a>
+            </li>
+        </ul>
+    </div>
+</body>

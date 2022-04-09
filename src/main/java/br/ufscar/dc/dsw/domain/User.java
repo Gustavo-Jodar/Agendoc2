@@ -13,6 +13,7 @@ import javax.persistence.Table;
 @Table(name = "users")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User {
+
     @Id
     @Column(length = 16)
     private String cpf;
@@ -62,6 +63,14 @@ public class User {
 
     public void setPapel(String papel) {
         this.papel = papel;
+    }
+
+    public String getRole() {
+        return papel;
+    }
+
+    public void setRole(String role) {
+        this.papel = role;
     }
 
     public String getNome() {

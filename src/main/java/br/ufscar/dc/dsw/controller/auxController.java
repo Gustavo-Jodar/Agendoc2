@@ -29,17 +29,17 @@ public class auxController {
 
             if (user.getPassword().equals(senha)) {
 
-                String papel = user.getPapel();
+                String papel = user.getAuthorities().toArray()[0].toString();
                 if (papel.replaceAll("\\P{L}+", "").equals("ADMIN"))
                     return "redirect:/admins";
                 if (papel.replaceAll("\\P{L}+", "").equals("CLIENTE"))
-                    return "redirect:clientes";
+                    return "redirect:/clientes";
                 if (papel.replaceAll("\\P{L}+", "").equals("PROFISSIONAL"))
                     return "redirect:/profissional";
             }
         }
 
-        return "/users";
+        return "redirect:/users/showProfissionais";
     }
 
 }

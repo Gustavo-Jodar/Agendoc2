@@ -41,11 +41,6 @@ public class userController {
     @Autowired
     UserDetailsService userDetailsService;
 
-    @GetMapping("/")
-    public String index(Model model) {
-        return "index";
-    }
-
     @GetMapping("/retornaIndex")
     public String retornaIndex(Model model) {
         return "index.html";
@@ -85,7 +80,7 @@ public class userController {
 
     @GetMapping("/showLogin")
     public String apresentaFormLogin(Model model) {
-        return "user/login.html";
+        return "/user/login.html";
     }
 
     @GetMapping("/login")
@@ -99,7 +94,7 @@ public class userController {
                 if (papel.replaceAll("\\P{L}+", "").equals("ADMIN"))
                     return "redirect:/admins";
                 if (papel.replaceAll("\\P{L}+", "").equals("CLIENTE"))
-                    return "redirect:clientes";
+                    return "redirect:/clientes";
                 if (papel.replaceAll("\\P{L}+", "").equals("PROFISSIONAL"))
                     return "redirect:/profissional";
             }

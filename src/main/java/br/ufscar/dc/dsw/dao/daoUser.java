@@ -14,4 +14,7 @@ public interface daoUser extends CrudRepository<User, String> {
 
     void deleteByCpf(String cpf);
 
+    @Query("SELECT u FROM User u WHERE u.nome = :username")
+    public User getUserByUsername(@Param("username") String username);
+
 }

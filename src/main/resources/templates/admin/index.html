@@ -19,7 +19,15 @@
                 <a th:href="@{/admins/listaProfissionais}" th:text="#{professional_crud.text}"></a>
             </li>
             <li>
-                <a th:href="@{/users/logout}" th:text="#{logout.text}"></a>
+                <!--<a th:href="@{/logout}" th:text="#{logout.text}"></a> -->
+                <form th:action="@{/logout}" method="post">
+                    <div class="row">
+                        <div class="col-sm-12 col-sm-offset-3">
+                            <input type="submit" name="login-submit" id="login-submit" class="form-control btn btn-info"
+                                value="Logout">
+                        </div>
+                    </div>
+                </form>
             </li>
         </ul>
     </div>

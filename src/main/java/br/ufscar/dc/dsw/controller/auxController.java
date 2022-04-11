@@ -1,6 +1,10 @@
 package br.ufscar.dc.dsw.controller;
 
 import br.ufscar.dc.dsw.dao.daoCliente;
+import br.ufscar.dc.dsw.dao.daoUser;
+import br.ufscar.dc.dsw.domain.User;
+
+import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,26 +24,29 @@ public class auxController {
     @Autowired
     UserDetailsService userDetailsService;
 
-    @GetMapping("/")
-    public String login(Model model, @RequestParam("email") String email, @RequestParam("senha") String senha) {
+    @Autowired
+    daoUser daoUser;
+
+    @GetMapping("/getRole")
+    public String login(Model model, Principal principal) {
+        // @RequestParam("email") String email, @RequestParam("senha") String senha
         // User user = daoUser.findByEmail(email);
-        UsuarioDetails user = (UsuarioDetails) userDetailsService.loadUserByUsername(email);
+        System.out.println(principal.getName());
 
-        if (user != null) {
+        User user = daoUser.getUserByUsername(principal.getName());
+        System.out.println("Parte 2");
+        System.out.println(user.getNome());
 
-            if (user.getPassword().equals(senha)) {
+        String papel = user.getRole();
 
-                String papel = user.getAuthorities().toArray()[0].toString();
-                if (papel.replaceAll("\\P{L}+", "").equals("ADMIN"))
-                    return "redirect:/admins";
-                if (papel.replaceAll("\\P{L}+", "").equals("CLIENTE"))
-                    return "redirect:/clientes";
-                if (papel.replaceAll("\\P{L}+", "").equals("PROFISSIONAL"))
-                    return "redirect:/profissional";
-            }
-        }
+        if (papel.replaceAll("\\P{L}+", "").equals("ADMIN"))
+            return "redirect:/admins";
+        if (papel.replaceAll("\\P{L}+", "").equals("CLIENTE"))
+            return "redirect:/clientes";
+        if (papel.replaceAll("\\P{L}+", "").equals("PROFISSIONAL"))
+            return "redirect:/profissionais";
 
-        return "redirect:/users/showProfissionais";
+        return "ue";
     }
 
 }

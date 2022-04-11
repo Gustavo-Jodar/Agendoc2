@@ -19,8 +19,12 @@ public class UsuarioDetailsServiceImpl implements UserDetailsService {
         User user = dao.getUserByUsername(username);
 
         if (user == null) {
+            System.out.println("shiii");
             throw new UsernameNotFoundException("Could not find user");
         }
+
+        System.out.println(user.getRole());
+
         return new UsuarioDetails(user);
     }
 

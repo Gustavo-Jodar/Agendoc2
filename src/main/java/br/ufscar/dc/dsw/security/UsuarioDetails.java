@@ -32,7 +32,12 @@ public class UsuarioDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + user.getRole());
+        System.out.println(user.getRole().replaceAll("\\P{L}+", ""));
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(
+                "ROLE_" + user.getRole().replaceAll("\\P{L}+", ""));
+
+        System.out.println(authority.toString());
+
         return Arrays.asList(authority);
     }
 
@@ -40,7 +45,9 @@ public class UsuarioDetails implements UserDetails {
     public String getPassword() {
         // achava que o negócio tava decodificando uma coisa nao codificada por isso
         // codifiquei aqui
+        passwordEncoder = encoder();
         return passwordEncoder.encode(user.getSenha());
+        // return user.getSenha();
     }
 
     @Override

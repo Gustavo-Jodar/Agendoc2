@@ -30,7 +30,7 @@ public class adminController {
 
     @GetMapping("/")
     public String index(Model model) {
-        return "admin/index";
+        return "/admin/index.html";
     }
 
     @GetMapping("/listaClientes")

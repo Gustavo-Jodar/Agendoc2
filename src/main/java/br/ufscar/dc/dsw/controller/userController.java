@@ -86,25 +86,21 @@ public class userController {
     }
 
     @PostMapping("/salvarCliente")
-    public String salvar(Model model, Cliente cliente, BindingResult result) throws ParseException {
-        /*
-         * if (result.hasErrors()) {
-         * return "redirect:/showCadastro";
-         * }
-         */
-        String startDateStrNascimento = model.getAttribute("nascimento").toString();
+    public String salvar(Model model, Cliente cliente, BindingResult result,
+            @RequestParam("nascimento") String startDateStrNascimento) throws ParseException {
+        if (result.hasErrors()) {
+            return "redirect:/showCadastro";
+        }
+
         startDateStrNascimento = startDateStrNascimento.replace('/', '-');
-
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
         Date nascimento = sdf.parse(startDateStrNascimento);
 
         cliente.setNascimento(nascimento);
-
-        System.out.println("nascimento = " + cliente.getNascimento());
         cliente.setPapel("CLIENTE");
 
         daoCliente.save(cliente);
+
         return "redirect:/users/showLogin";
     }
 
@@ -125,25 +121,4 @@ public class userController {
     public String apresentaFormLogin(Model model) {
         return "/user/login.html";
     }
-
-    @GetMapping("/login")
-    public String login(Model model, @RequestParam("email") String email, @RequestParam("senha") String senha) {
-        // User user = daoUser.findByEmail(email);
-        User user = daoUser.findByEmail(email);
-        if (user != null) {
-
-            if (user.getSenha().equals(senha)) {
-                String papel = user.getPapel();
-                if (papel.replaceAll("\\P{L}+", "").equals("ADMIN"))
-                    return "redirect:/admins";
-                if (papel.replaceAll("\\P{L}+", "").equals("CLIENTE"))
-                    return "redirect:/clientes";
-                if (papel.replaceAll("\\P{L}+", "").equals("PROFISSIONAL"))
-                    return "redirect:/profissional";
-            }
-        }
-
-        return "/users";
-    }
-
 }

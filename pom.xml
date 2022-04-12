@@ -15,7 +15,7 @@
 	<name>Agendoc2</name>
 	<description>Sistema de agendamento de consultas online com Spring</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>1.8</java.version>
 	</properties>
 	<dependencies>
 		<dependency>

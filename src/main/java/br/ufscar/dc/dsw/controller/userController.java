@@ -104,9 +104,28 @@ public class userController {
         return "redirect:/users/showLogin";
     }
 
+    @PostMapping("/salvarProfissional")
+    public String salvar(Model model, Profissional profissional, BindingResult result,
+            @RequestParam("nascimento") String startDateStrNascimento) throws ParseException {
+        if (result.hasErrors()) {
+            return "redirect:/showCadastro";
+        }
+
+        startDateStrNascimento = startDateStrNascimento.replace('/', '-');
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date nascimento = sdf.parse(startDateStrNascimento);
+
+        profissional.setNascimento(nascimento);
+        profissional.setPapel("PROFISSIONAL");
+
+        daoProfissional.save(profissional);
+
+        return "redirect:/users/showLogin";
+    }
+
     @GetMapping("showCadastroProfissional")
     public String showCadastroProfissional(Model model) {
-        return "/profissional/cadastro.jsp";
+        return "/profissional/cadastro.html";
     }
 
     @GetMapping("/verificaUsuarioLogado")

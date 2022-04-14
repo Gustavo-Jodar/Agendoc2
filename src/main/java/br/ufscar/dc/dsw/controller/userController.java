@@ -108,7 +108,7 @@ public class userController {
     public String salvar(Model model, Profissional profissional, BindingResult result,
             @RequestParam("nascimento") String startDateStrNascimento) throws ParseException {
         if (result.hasErrors()) {
-            return "redirect:/showCadastro";
+            return "redirect:/users/showCadastroProfissional";
         }
 
         startDateStrNascimento = startDateStrNascimento.replace('/', '-');
@@ -126,14 +126,6 @@ public class userController {
     @GetMapping("showCadastroProfissional")
     public String showCadastroProfissional(Model model) {
         return "/profissional/cadastro.html";
-    }
-
-    @GetMapping("/verificaUsuarioLogado")
-    public String verificaUsuarioLogado(Model model) {
-
-        // tem que verificar se o usuario já está logado antes de fazer isso
-        // pra mandar ele pra página correta
-        return "redirect:/aux/";
     }
 
     @GetMapping("/showLogin")

@@ -31,11 +31,8 @@ public class auxController {
     public String login(Model model, Principal principal) {
         // @RequestParam("email") String email, @RequestParam("senha") String senha
         // User user = daoUser.findByEmail(email);
-        System.out.println(principal.getName());
 
         User user = daoUser.getUserByUsername(principal.getName());
-        System.out.println("Parte 2");
-        System.out.println(user.getNome());
 
         String papel = user.getRole();
 

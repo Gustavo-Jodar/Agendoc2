@@ -13,6 +13,7 @@ import br.ufscar.dc.dsw.util.Formata;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,17 +34,25 @@ public class adminController {
         return "/admin/index.html";
     }
 
+    @GetMapping("showPaginaAdmin")
+    public String showPaginaAdmin(Model model) {
+        return "/admin/index.html";
+    }
+
     @GetMapping("/listaClientes")
-    public String listaClientes(Model model) {
-        List<Cliente> listaClientes = daoCliente.findAll();
-        model.addAttribute("listaclientes", listaClientes);
+    public String listaClientes(ModelMap model) {
+        List<Cliente> listaClientes = new ArrayList<>();
+        listaClientes = daoCliente.findAll();
+        model.addAttribute("listaClientes", listaClientes);
+
         return "/admin/listaClientes.html";
     }
 
     @GetMapping("/listaProfissionais")
     public String listaProfissionais(Model model) {
-        List<Profissional> listaProfissionais = daoProfissional.findAll();
-        model.addAttribute("listaProfissionais", listaProfissionais);
+        List<Profissional> lista_profissionais = daoProfissional.findAll();
+
+        model.addAttribute("listaProfissionais", lista_profissionais);
         return "/admin/listaProfissionais.html";
     }
 

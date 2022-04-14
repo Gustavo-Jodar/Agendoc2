@@ -32,11 +32,8 @@ public class UsuarioDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        System.out.println(user.getRole().replaceAll("\\P{L}+", ""));
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority(
                 "ROLE_" + user.getRole().replaceAll("\\P{L}+", ""));
-
-        System.out.println(authority.toString());
 
         return Arrays.asList(authority);
     }

@@ -12,6 +12,10 @@ import br.ufscar.dc.dsw.domain.Cliente;
 public interface daoCliente extends CrudRepository<Cliente, String> {
     Cliente findByEmail(String email);
 
+    Cliente findByCpf(String cpf);
+
+    void delete(Cliente cliente);
+
     List<Cliente> findAll();
 
     Cliente save(Cliente cliente);

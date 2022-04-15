@@ -2,7 +2,11 @@ package br.ufscar.dc.dsw.controller;
 
 import br.ufscar.dc.dsw.dao.daoCliente;
 import br.ufscar.dc.dsw.dao.daoProfissional;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import br.ufscar.dc.dsw.domain.Cliente;
@@ -11,11 +15,15 @@ import br.ufscar.dc.dsw.domain.User;
 import br.ufscar.dc.dsw.util.Formata;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.annotation.QueryAnnotation;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -56,181 +64,142 @@ public class adminController {
         return "/admin/listaProfissionais.html";
     }
 
-    /*
-     * // função para acessar página de edição de cliente
-     * private void apresentaEdicaoCliente(HttpServletRequest request,
-     * HttpServletResponse response)
-     * throws ServletException, IOException {
-     * 
-     * String emailCliente = request.getParameter("email");
-     * User clienteUser = daoUser.getbyLogin(emailCliente);
-     * Cliente cliente = daoCliente.getbyLogin(clienteUser);
-     * 
-     * System.out.println(cliente.getCpf());
-     * RequestDispatcher dispatcher =
-     * request.getRequestDispatcher("/admin/editCliente.jsp");
-     * request.setAttribute("clienteEdit", cliente);
-     * 
-     * dispatcher.forward(request, response);
-     * }
-     * 
-     * // função para acessar página de edição de profissional
-     * private void apresentaEdicaoProfissioanl(HttpServletRequest request,
-     * HttpServletResponse response)
-     * throws ServletException, IOException {
-     * 
-     * String emailProfissional = request.getParameter("email");
-     * User profissionalUser = daoUser.getbyLogin(emailProfissional);
-     * Profissional profissional = daoProfissional.getbyLogin(profissionalUser);
-     * 
-     * System.out.println(profissional.getCpf());
-     * RequestDispatcher dispatcher =
-     * request.getRequestDispatcher("/admin/editProfissional.jsp");
-     * request.setAttribute("profissionalEdit", profissional);
-     * 
-     * dispatcher.forward(request, response);
-     * }
-     * 
-     * // função para acessar página de edição de profissional
-     * private void apresentaAdicionarProfissional(HttpServletRequest request,
-     * HttpServletResponse response)
-     * throws ServletException, IOException {
-     * 
-     * RequestDispatcher dispatcher =
-     * request.getRequestDispatcher("/admin/addProfissional.jsp");
-     * dispatcher.forward(request, response);
-     * }
-     * 
-     * // função para acessar página de edição de profissional
-     * private void apresentaAdicionarCliente(HttpServletRequest request,
-     * HttpServletResponse response)
-     * throws ServletException, IOException {
-     * 
-     * RequestDispatcher dispatcher =
-     * request.getRequestDispatcher("/admin/addCliente.jsp");
-     * dispatcher.forward(request, response);
-     * }
-     * 
-     * // função para edição de cliente
-     * private void editaCliente(HttpServletRequest request, HttpServletResponse
-     * response)
-     * throws ServletException, IOException, ParseException {
-     * request.setCharacterEncoding("UTF-8");
-     * String cpf = request.getParameter("cpf");
-     * String nome = request.getParameter("nome");
-     * String email = request.getParameter("email");
-     * String senha = request.getParameter("senha");
-     * String telefone = request.getParameter("telefone");
-     * String sexo = request.getParameter("sexo");
-     * 
-     * String startDateStrNascimento = request.getParameter("nascimento");
-     * startDateStrNascimento = startDateStrNascimento.replace('/', '-');
-     * 
-     * SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-     * 
-     * try {
-     * Date nascimento = sdf.parse(startDateStrNascimento);
-     * 
-     * Cliente cliente = new Cliente(cpf, nome, email, senha, telefone, sexo,
-     * nascimento);
-     * daoCliente.update(cliente);
-     * 
-     * List<Cliente> listaClientes = daoCliente.getAll();
-     * request.setAttribute("listaClientes", listaClientes);
-     * 
-     * response.sendRedirect("listaClientes");
-     * 
-     * } catch (RuntimeException | ParseException | IOException e) {
-     * Erro erro = new Erro();
-     * erro.add(
-     * "Operação não sucedida, verifique se seu dados estão corretos!\nOperation failed, please check if your data is correct!"
-     * );
-     * request.setAttribute("mensagens", erro);
-     * RequestDispatcher rd =
-     * request.getRequestDispatcher("/admins/apresentaEdicaoCliente");
-     * rd.forward(request, response);
-     * // throw new ServletException(e);
-     * }
-     * 
-     * }
-     * 
-     * // função para edição de profissional
-     * private void editaProfissional(HttpServletRequest request,
-     * HttpServletResponse response)
-     * throws ServletException, IOException, ParseException {
-     * request.setCharacterEncoding("UTF-8");
-     * Formata f = new Formata();
-     * 
-     * String cpf = request.getParameter("cpf");
-     * String nome = request.getParameter("nome");
-     * String email = request.getParameter("email");
-     * String senha = request.getParameter("senha");
-     * String bio = request.getParameter("bio");
-     * String especialidade =
-     * f.formataString(request.getParameter("especialidade"));
-     * String area = f.formataString(request.getParameter("area"));
-     * 
-     * String startDateStrNascimento = request.getParameter("nascimento");
-     * startDateStrNascimento = startDateStrNascimento.replace('/', '-');
-     * 
-     * SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-     * 
-     * try {
-     * Date nascimento = sdf.parse(startDateStrNascimento);
-     * 
-     * Profissional profissional = new Profissional(cpf, nome, email, senha, bio,
-     * area, especialidade, nascimento);
-     * daoProfissional.update(profissional);
-     * 
-     * List<Profissional> listaProfissionais = daoProfissional.getAll();
-     * request.setAttribute("listaProfissionaiss", listaProfissionais);
-     * 
-     * // NAO É NO LISTA QUE É PRA REDIRECIONAAAAAAAAAAAAAAAAAAAR
-     * response.sendRedirect("listaProfissionais");
-     * 
-     * } catch (RuntimeException | ParseException | IOException e) {
-     * Erro erro = new Erro();
-     * erro.add(
-     * "Operação não sucedida, verifique se seu dados estão corretos!\nOperation failed, please check if your data is correct!"
-     * );
-     * request.setAttribute("mensagens", erro);
-     * RequestDispatcher rd =
-     * request.getRequestDispatcher("/admins/apresentaEdicaoProfissional");
-     * rd.forward(request, response);
-     * }
-     * }
-     * 
-     * // função para remoção de cliente
-     * private void removerCliente(HttpServletRequest request, HttpServletResponse
-     * response)
-     * throws ServletException, IOException {
-     * String cpfCliente = request.getParameter("cpf");
-     * 
-     * daoUser.remobeByCpf(cpfCliente);
-     * List<Cliente> listaClientes = daoCliente.getAll();
-     * 
-     * request.setAttribute("listaClientes", listaClientes);
-     * 
-     * RequestDispatcher dispatcher =
-     * request.getRequestDispatcher("/admin/listaClientes.jsp");
-     * dispatcher.forward(request, response);
-     * }
-     * 
-     * // função para remoção de profissioanl
-     * private void removerProfissional(HttpServletRequest request,
-     * HttpServletResponse response)
-     * throws ServletException, IOException {
-     * String cpfProfissional = request.getParameter("cpf");
-     * 
-     * daoUser.remobeByCpf(cpfProfissional);
-     * List<Profissional> listaProfissionais = daoProfissional.getAll();
-     * 
-     * request.setAttribute("listaProfissionais", listaProfissionais);
-     * 
-     * RequestDispatcher dispatcher =
-     * request.getRequestDispatcher("/admin/listaProfissionais.jsp");
-     * dispatcher.forward(request, response);
-     * }
-     * 
-     */
+    @GetMapping("/apresentaAdicionarCliente")
+    public String apresentaAdicionarCliente(Model model) {
+        return "/admin/addCliente.html";
+    }
+
+    @GetMapping("/apresentaEdicaoCliente")
+    public String apresentaEdicaoCliente(Model model, @RequestParam("email") String email) throws ParseException {
+        Cliente cliente = daoCliente.findByEmail(email);
+
+        model.addAttribute("clienteEdit", cliente);
+
+        return "/admin/editCliente.html";
+    }
+
+    @PostMapping("/editaCliente")
+    public String editarCliente(Model model, Cliente cliente, BindingResult result,
+            @RequestParam("nascimento") String startDateStrNascimento) throws ParseException {
+
+        if (result.hasErrors()) {
+            System.out.println(result.getAllErrors());
+            return "redirect:/admins/listaClientes";
+        }
+
+        startDateStrNascimento = startDateStrNascimento.replace('/', '-');
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date nascimento = sdf.parse(startDateStrNascimento);
+
+        cliente.setNascimento(nascimento);
+        cliente.setPapel("CLIENTE");
+
+        daoCliente.save(cliente);
+
+        return "redirect:/admins/listaClientes";
+    }
+
+    @GetMapping("/removerCliente")
+    public String removerCliente(Model model, @RequestParam("cpf") String cpf) {
+
+        daoCliente.delete(daoCliente.findByCpf(cpf));
+
+        return "redirect:/admins/listaClientes";
+    }
+
+    @GetMapping("/apresentaAdicionarProfissional")
+    public String apresentaAdicionarProfissional(Model model) {
+        return "/admin/addProfissional.html";
+    }
+
+    @PostMapping("/editaProfissional")
+    public String editarProfissional(Model model, Profissional profissional, BindingResult result,
+            @RequestParam("nascimento") String startDateStrNascimento) throws ParseException {
+
+        if (result.hasErrors()) {
+            System.out.println(result.getAllErrors());
+            return "redirect:/admins/listaProfissionais";
+        }
+
+        startDateStrNascimento = startDateStrNascimento.replace('/', '-');
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date nascimento = sdf.parse(startDateStrNascimento);
+
+        profissional.setNascimento(nascimento);
+        profissional.setPapel("PROFISSIONAL");
+
+        daoProfissional.save(profissional);
+
+        return "redirect:/admins/listaProfissionais";
+    }
+
+    @GetMapping("/removerProfissional")
+    public String removerProfissional(Model model, @RequestParam("cpf") String cpf) {
+
+        daoProfissional.delete(daoProfissional.findByCpf(cpf));
+
+        return "redirect:/admins/listaProfissionais";
+    }
+
+    @GetMapping("/apresentaEdicaoProfissional")
+    public String apresentaEdicaoProfissional(Model model, @RequestParam("email") String email) {
+        Profissional profissional = daoProfissional.findByEmail(email);
+
+        model.addAttribute("profissionalEdit", profissional);
+        return "/admin/editProfissional.html";
+    }
+
+    @PostMapping("/saveProfissional")
+    public String salvar(Model model, Profissional profissional, BindingResult result,
+            @RequestParam("nascimento") String startDateStrNascimento) throws ParseException {
+        if (result.hasErrors()) {
+            return "redirect:/admins/apresentaAdicionarProfissional";
+        }
+
+        startDateStrNascimento = startDateStrNascimento.replace('/', '-');
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date nascimento = sdf.parse(startDateStrNascimento);
+
+        String area = profissional.getArea();
+        if (area.substring(0, 1).equals("1"))
+            area = "MEDICINA";
+        if (area.substring(0, 1).equals("2"))
+            area = "ADVOCACIA";
+        if (area.substring(0, 1).equals("3"))
+            area = "PSICOLOGIA";
+        if (area.substring(0, 1).equals("4"))
+            area = "EDUCACAO";
+        if (area.substring(0, 1).equals("5"))
+            area = "NUTRICAO";
+        if (area.substring(0, 1).equals("6"))
+            area = "TERAPIA";
+
+        profissional.setArea(area);
+        profissional.setNascimento(nascimento);
+        profissional.setPapel("PROFISSIONAL");
+
+        daoProfissional.save(profissional);
+
+        return "redirect:/admins/listaProfissionais";
+    }
+
+    @PostMapping("/saveCliente")
+    public String salvar(Model model, Cliente cliente, BindingResult result,
+            @RequestParam("nascimento") String startDateStrNascimento) throws ParseException {
+        if (result.hasErrors()) {
+            System.out.println(result.getAllErrors());
+            return "redirect:/apresentaAdicionarCliente";
+        }
+
+        startDateStrNascimento = startDateStrNascimento.replace('/', '-');
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date nascimento = sdf.parse(startDateStrNascimento);
+
+        cliente.setNascimento(nascimento);
+        cliente.setPapel("CLIENTE");
+
+        daoCliente.save(cliente);
+
+        return "redirect:/admins/listaClientes";
+    }
 }

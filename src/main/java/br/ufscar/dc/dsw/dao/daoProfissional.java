@@ -2,6 +2,7 @@ package br.ufscar.dc.dsw.dao;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -14,11 +15,17 @@ public interface daoProfissional extends CrudRepository<Profissional, String> {
 
     Profissional findByCpf(String cpf);
 
+    Profissional findByEmail(String email);
+
     List<Profissional> findAll();
 
     Profissional save(Profissional profissional);
 
-    void deleteByCpf(String cpf);
+    void delete(Profissional profissional);
+
+    @Modifying
+    @Query("DELETE FROM Profissional prof WHERE prof.cpf = :cpf")
+    void deleteByCpf(@Param("cpf") String cpf);
 
     @Query("SELECT prof FROM Profissional prof WHERE prof.area = :area")
     List<Profissional> getWithFilter_a(@Param("area") String area);

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"> 
+<head>
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendoc</title> 
+
+    <%
+        String contextPath = request.getContextPath().replace("/", "");
+    %>
+
+    <link rel="stylesheet" href="../styles/main.css"> 
+    <link rel="stylesheet" href="../styles/header.css">
+    <link rel="stylesheet" href="../styles/page-prof.css"> 
+    <link rel="stylesheet" href="../styles/forms.css">
+    <link rel="stylesheet" href="../styles/appointment.css">
+    <link rel="stylesheet" href="../styles/erro.css">
+
+</head>
+<body id= "page-start" >
+    <div id= "container">
+        <header class="page-header">
+            <div class="top-bar-container">
+                <a th:href="../profissionais/showPaginaProfissional}">
+                <img src="../images/back.svg" alt="Voltar">
+                </a>
+            </div>
+            <div class="header-content">
+                <strong> Veja sobre sua consulta</strong>
+                <span> Sempre evite desmarcar consultas de ultima hora. </span>
+                <span> Nao se atrase. </span>
+                <span> Nao se esqueca de disponibilizar o link da consulta. </span>
+            </div>
+        </header>
+        <div class="schedule">
+            <div class="link-time">
+                <strong>Cliente:</strong> 
+                <legend>${consulta.nome_cliente}</legend>
+            </div>
+            <div class="link-time">
+                <strong>Data e horário da consulta:</strong> 
+                <legend> ${consulta.data_consulta} - ${consulta.horario}h00min</legend>
+            </div>
+            <div class="link-time">
+                <strong>Link do Google Meet para a consulta:</strong>
+                <input name="link_meet" class="link" type="url" value="<c:out value='${consulta.link_meet}'/>">
+            </div>
+            <div class="cancel">
+                <a class="save" type="cancel" th:href="@{/<%= contextPath%>/profissionais/cancelaConsulta?data_consulta=<c:out value='${consulta.data_consulta}'/>&cpf_profissional=<c:out value='${consulta.cpf_profissional}' />&hora=<c:out value='${consulta.horario}'/>}" 
+                onclick="return confirm('Tem certeza que deseja cancela essa consulta? | Are you sure you want to cancel this appointment?');"
+                th:text="#{cancel_appointment.text}"></a>    
+            </div>
+        </div>
+    </div>
+</body>

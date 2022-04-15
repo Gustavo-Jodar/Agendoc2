@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <head>
@@ -26,24 +25,21 @@
 				<th th:text="#{edit.text}"></th>
 				<th th:text="#{delete.text}"></th>
 			</tr>
-			<tr th:each="cliente : ${listaClientes}"></tr>
-			<tr>
+			<tr th:each="cliente : ${listaClientes}">
 				<td th:text="${cliente.cpf}"></td>
 				<td th:text="${cliente.nome}"></td>
 				<td th:text="${cliente.email}"></td>
 				<td th:text="${cliente.telefone}"></td>
 				<td th:text="${cliente.sexo}"></td>
 				<td th:text="${cliente.nascimento}"></td>
-				<td align="center"><a
-						href="@{/admins/apresentaEdicaoCliente?email=<c:out value='${cliente.email}' />}">🖍️</a></td>
+				<td align="center"><a th:href="@{/admins/apresentaEdicaoCliente?(email=${cliente.email})}">🖍️</a></td>
 				<td align="center">
-					<a href="@{/admins/removerCliente?cpf=<c:out value='${cliente.cpf}' />}"
+					<a th:href="@{/admins/removerCliente?(cpf=${cliente.cpf})}"
 						onclick="return confirm('Tem certeza que deseja excluir este usuário?');">🗑️</a>
 				</td>
 			</tr>
-			</tr>
 		</table>
 		<br />
-		<a href="@{/admins/apresentaAdicionarCliente}" th:text="#{add_client.text}"></a>
+		<a th:href="@{/admins/apresentaAdicionarCliente}" th:text="#{add_client.text}"></a>
 	</div>
 </body>

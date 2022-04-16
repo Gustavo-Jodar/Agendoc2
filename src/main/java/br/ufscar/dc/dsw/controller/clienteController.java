@@ -27,7 +27,7 @@ public class clienteController {
 
     @GetMapping("/")
     public String index(Model model) {
-        return "admin/index";
+        return "cliente/index";
     }
 
 }

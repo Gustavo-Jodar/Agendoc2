@@ -1,6 +1,9 @@
+/home/gustavo/Documentos/facul/WEB1/T2/Agendoc2/src/main/java/br/ufscar/dc/dsw/domain/Consulta.java
 /home/gustavo/Documentos/facul/WEB1/T2/Agendoc2/src/main/java/br/ufscar/dc/dsw/domain/Profissional.java
 /home/gustavo/Documentos/facul/WEB1/T2/Agendoc2/src/main/java/br/ufscar/dc/dsw/dao/daoUser.java
 /home/gustavo/Documentos/facul/WEB1/T2/Agendoc2/src/main/java/br/ufscar/dc/dsw/controller/ErrorViewController.java
+/home/gustavo/Documentos/facul/WEB1/T2/Agendoc2/src/main/java/br/ufscar/dc/dsw/dao/daoConsulta.java
+/home/gustavo/Documentos/facul/WEB1/T2/Agendoc2/src/main/java/br/ufscar/dc/dsw/controller/profissionalController.java
 /home/gustavo/Documentos/facul/WEB1/T2/Agendoc2/src/main/java/br/ufscar/dc/dsw/domain/User.java
 /home/gustavo/Documentos/facul/WEB1/T2/Agendoc2/src/main/java/br/ufscar/dc/dsw/controller/adminController.java
 /home/gustavo/Documentos/facul/WEB1/T2/Agendoc2/src/main/java/br/ufscar/dc/dsw/domain/Cliente.java

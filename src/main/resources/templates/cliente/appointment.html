@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendoc</title> 
+
+
+    <link rel="stylesheet" href="../styles/main.css"> 
+    <link rel="stylesheet" href="../styles/header.css">
+    <link rel="stylesheet" href="../styles/page-prof.css"> 
+    <link rel="stylesheet" href="../styles/forms.css">
+    <link rel="stylesheet" href="../styles/appointment.css">
+    <link rel="stylesheet" href="../styles/erro.css">
+
+</head>
+<body id= "page-start" >
+    <div id= "container">
+        <header class="page-header">
+            <div class="top-bar-container">
+                <a th:href="../seeProf.html">
+                <img src="../images/back.svg" alt="Voltar">
+                </a>
+            </div>
+            <div class="header-content">
+                <strong th:text="#{make_appointment_with.text}"></strong><strong th:text=" ${profissionalEscolhido.nome}"></strong>
+                <span>Area: <span th:text=" ${profissionalEscolhido.area}"></span></span>
+                <span th:text="#{speciality.text}"> <span th:text=" ${profissionalEscolhido.especialidade}"> </span> </span>
+                <p th:text="#{bio.text}">: <p th:text=" ${profissionalEscolhido.bio}"></p> </p>
+                <!-- aqui teria que de alguma forma ter os dados do profissional com quem estou marcando -->
+            </div>
+        </header>
+        <div class="schedule">
+            <header class="title">
+                <strong th:text="#{make_appointment_with.text}"></strong>
+            </header>
+            <fieldset id="schedule-items" class="schedule-box">
+                <legend th:text="#{choose_date.text}"></legend>
+                <c:choose>
+                        <c:when test="${consulta_aux.data_consulta!=null}">     
+                            <form action="../clientes/cadastraConsulta?cpf_profissional=<c:out value='${profissionalEscolhido.cpf}'/>" method="POST" id="register-prof">
+                            <div>
+                                <div>
+                                    <label for="birth" th:text="#{date.text}"></label>
+                                    <input type="date" name="data_consulta" value="<c:out value='${data_nao_formatada}'/>" readonly>
+                                </div>
+                            </div>
+                            <legend th:text="#{choose_time.text}"></legend>
+                            <br/>
+                            <p th:text="#{info_time.text}"></p>    
+                            <select class="form-control" name="horario" required>
+                                    <option value="" required th:text="#{select_option.text}"></option>   
+                                    <c:forEach var="line" items="${horariosLivres}">
+                                        <option value="<c:out value='${line}'/>">${line}h00</option>
+                                    </c:forEach>
+                            </select>
+                            <legend th:text="#{add_link.text}"></legend>
+                            <input name="link_meet" class="link" type="url" value="" required> 
+                            </form>
+                            <button type="submit" class="save" form="register-prof" value="Cadastrar"><fmt:message key="schedule_appointment"/></button>
+                            <a class="button" th:href="../users/verificaEstaLogado?cpf=<c:out value='${profissionalEscolhido.cpf}'/>"><fmt:message key="check_other_times"/></a>
+                            <div id="erro">
+                                <div>
+                                    <c:forEach var="erro" items="${mensagens.erros}">
+                                    <div class="alerta" > ${erro} </div>
+                                    </c:forEach>
+                                </div>
+                            </div>
+                        </c:when>    
+                        <c:otherwise>
+                            <form action="../clientes/reapresentaMarcarConsulta?cpf=<c:out value='${profissionalEscolhido.cpf}'/>" method="POST" id="register-prof">
+                            <div class="schedule-item">
+                                <div class="input-block">
+                                
+                                    <label for="weekday" th:text="#{date.text}"></label>
+                                    <input type="date" name="data_consulta" class="data-input" required>
+                                </div>
+                            </div>
+                            </form>    
+                            <button type="submit" form="register-prof" class="save" value="" th:text="#{choose_time.text}"></button>
+                            <div id="erro">
+                                <div>
+                                    <c:forEach var="erro" items="${mensagens.erros}">
+                                        <div class="alerta" > ${erro} </div>
+                                        </c:forEach>
+                                </div>
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
+            </fieldset>
+        </div>
+    </div>
+</body>

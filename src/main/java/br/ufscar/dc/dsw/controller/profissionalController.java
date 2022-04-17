@@ -66,4 +66,21 @@ public class profissionalController {
         return "profissional/editAppointment.html";
     }
 
+    @GetMapping("/cancelaConsulta")
+    public String cancelarConsulta(Model model, @RequestParam("id") Integer id) {
+        Consulta consulta = daoConsulta.findById(id);
+        daoConsulta.delete(consulta);
+
+        return "redirect:showIndex";
+    }
+
+    @GetMapping("/edit_link")
+    public String editarLink(Model model, @RequestParam("link_meet") String link_meet,
+            @RequestParam("id") Integer id) {
+
+        daoConsulta.setLink(link_meet, id);
+
+        return "redirect:showIndex";
+    }
+
 }

@@ -39,7 +39,7 @@
                 <legend th:text="#{choose_date.text}"></legend>
                 <c:choose>
                         <c:when test="${consulta_aux.data_consulta!=null}">     
-                            <form action="../clientes/cadastraConsulta?cpf_profissional=<c:out value='${profissionalEscolhido.cpf}'/>" method="POST" id="register-prof">
+                            <form th:action="../clientes/cadastraConsulta?cpf_profissional=<c:out value='${profissionalEscolhido.cpf}'/>" method="POST" id="register-prof">
                             <div>
                                 <div>
                                     <label for="birth" th:text="#{date.text}"></label>
@@ -69,7 +69,7 @@
                             </div>
                         </c:when>    
                         <c:otherwise>
-                            <form action="../clientes/reapresentaMarcarConsulta?cpf=<c:out value='${profissionalEscolhido.cpf}'/>" method="POST" id="register-prof">
+                            <form th:action="../clientes/reapresentaMarcarConsulta?cpf=<c:out value='${profissionalEscolhido.cpf}'/>" method="POST" id="register-prof">
                             <div class="schedule-item">
                                 <div class="input-block">
                                 

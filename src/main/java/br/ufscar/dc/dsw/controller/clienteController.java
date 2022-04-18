@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -116,7 +117,12 @@ public class clienteController {
     }
 
     @GetMapping("/apresentaMarcarConsulta1")
-    public String apresentaMarcarConsulta1(Model model, @RequestParam("cpf_profissional") String cpf_profissional) {
+    public String apresentaMarcarConsulta1(Model model, @RequestParam("cpf_profissional") String cpf_profissional,
+            @RequestParam(value = "invalidDate", required = false) String invDate) {
+
+        if (invDate != null) {
+            model.addAttribute("invDate", true);
+        }
 
         Profissional profissionalEscolhido = daoProfissional
                 .findByCpf(cpf_profissional.replaceAll("\\s+", ""));
@@ -149,6 +155,13 @@ public class clienteController {
         List<Consulta> consultas_marcadas_profissional = daoConsulta.get_by_cpf_profissional_data_consulta(
                 cpf_profissional,
                 data_consulta);
+
+        if (data_consulta.before(daoConsulta.findAll().get(0).get_today()) ||
+                data_consulta.equals(consultas_marcadas_cliente.get(0).get_today())) {
+            return "redirect:/clientes/apresentaMarcarConsulta1?cpf_profissional="
+                    + cpf_profissional.replaceAll("\\s+", "") + "&invalidDate=true";
+
+        }
 
         List<Consulta> consultasNoMesmoDia = new ArrayList<>();
         consultasNoMesmoDia.addAll(consultas_marcadas_cliente);

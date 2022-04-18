@@ -40,6 +40,17 @@
             <header class="title">
                 <strong th:text="#{make_appointment_with.text}"></strong>
             </header>
+            <div id="erro">
+                <div id="erro">
+                    <div>
+                        <div th:if="${invDate} != null">
+                            <div class="alert alert-danger">
+                                <span th:text="#{data_inv.text}"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <fieldset id="schedule-items" class="schedule-box">
                 <legend th:text="#{choose_date.text}"></legend>
                 <div th:if="${consulta_aux != null}">
@@ -70,22 +81,10 @@
                     </form>
                     <button type="submit" class="save" form="register-prof" th:text="#{schedule_appointment.text}">
                     </button>
-                    <a class="button" th:href="@{/clientes/apresentaMarcarConsulta1?(cpf=${profissionalEscolhido.cpf})}"
+                    <a class="button"
+                        th:href="@{/clientes/apresentaMarcarConsulta1?(cpf_profissional=${profissionalEscolhido.cpf})}"
                         th:text="#{check_other_times.text}">
                     </a>
-                    <div id="erro">
-                        <div>
-                            <div id="erro">
-                                <div>
-                                    <div th:if="${param.error}">
-                                        <div class="alert alert-danger">
-                                            <span th:text="#{login.error}"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <div th:if="${consulta_aux == null}">
                     <form

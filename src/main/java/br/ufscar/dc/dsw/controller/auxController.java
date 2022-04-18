@@ -39,7 +39,7 @@ public class auxController {
         if (papel.replaceAll("\\P{L}+", "").equals("ADMIN"))
             return "redirect:/admins";
         if (papel.replaceAll("\\P{L}+", "").equals("CLIENTE"))
-            return "redirect:/clientes";
+            return "redirect:/clientes/showIndex";
         if (papel.replaceAll("\\P{L}+", "").equals("PROFISSIONAL"))
             return "redirect:/profissionais/showIndex";
 

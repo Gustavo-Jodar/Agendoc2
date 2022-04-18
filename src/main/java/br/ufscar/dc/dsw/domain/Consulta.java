@@ -106,4 +106,8 @@ public class Consulta implements Serializable {
     public void setNome_profissional(String nome_profissional) {
         this.nome_profissional = nome_profissional;
     }
+
+    public Date get_today() {
+        return new Date();
+    }
 }

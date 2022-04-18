@@ -57,7 +57,7 @@ public class profissionalController {
 
     @GetMapping("/apresentaConsulta")
     public String apresentaConsulta(Model model, Principal principal,
-            @RequestParam("id") Integer id) throws ParseException {
+            @RequestParam("id") Integer id) {
 
         Consulta consulta = daoConsulta.findById(id);
 

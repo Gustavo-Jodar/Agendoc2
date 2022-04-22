@@ -8,6 +8,7 @@ import br.ufscar.dc.dsw.security.UsuarioDetails;
 import br.ufscar.dc.dsw.security.UsuarioDetailsServiceImpl;
 
 import java.util.Date;
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,6 +20,8 @@ import br.ufscar.dc.dsw.domain.User;
 import br.ufscar.dc.dsw.util.Formata;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
@@ -29,6 +32,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/users")
@@ -104,11 +108,36 @@ public class userController {
         return "redirect:/users/showLogin";
     }
 
+    @PostMapping("/upload")
+    public String handleFileUpload(@RequestParam("file") MultipartFile file) {
+        String fileName = file.getOriginalFilename();
+
+        try {
+            file.transferTo(
+                    new File("/home/gustavo/Documentos/facul/WEB1/T2/Agendoc2/src/main/resources/uploads/" + fileName));
+        } catch (Exception e) {
+            return "what";
+        }
+
+        return "Nice";
+
+    }
+
     @PostMapping("/salvarProfissional")
     public String salvar(Model model, Profissional profissional, BindingResult result,
-            @RequestParam("nascimento") String startDateStrNascimento) throws ParseException {
+            @RequestParam("nascimento") String startDateStrNascimento,
+            @RequestParam("file") MultipartFile file) throws ParseException {
+        String fileName = file.getOriginalFilename();
+
         if (result.hasErrors()) {
             return "redirect:/users/showCadastroProfissional";
+        }
+
+        try {
+            file.transferTo(
+                    new File("/home/gustavo/Documentos/facul/WEB1/T2/Agendoc2/src/main/resources/uploads/" + fileName));
+        } catch (Exception e) {
+            return "what";
         }
 
         startDateStrNascimento = startDateStrNascimento.replace('/', '-');

@@ -108,21 +108,6 @@ public class userController {
         return "redirect:/users/showLogin";
     }
 
-    @PostMapping("/upload")
-    public String handleFileUpload(@RequestParam("file") MultipartFile file) {
-        String fileName = file.getOriginalFilename();
-
-        try {
-            file.transferTo(
-                    new File("/home/gustavo/Documentos/facul/WEB1/T2/Agendoc2/src/main/resources/uploads/" + fileName));
-        } catch (Exception e) {
-            return "what";
-        }
-
-        return "Nice";
-
-    }
-
     @PostMapping("/salvarProfissional")
     public String salvar(Model model, Profissional profissional, BindingResult result,
             @RequestParam("nascimento") String startDateStrNascimento,
@@ -137,7 +122,7 @@ public class userController {
             file.transferTo(
                     new File("/home/gustavo/Documentos/facul/WEB1/T2/Agendoc2/src/main/resources/uploads/" + fileName));
         } catch (Exception e) {
-            return "what";
+            return "redirect:users/salvarProfissional";
         }
 
         startDateStrNascimento = startDateStrNascimento.replace('/', '-');

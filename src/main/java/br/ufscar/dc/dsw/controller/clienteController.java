@@ -156,8 +156,8 @@ public class clienteController {
                 cpf_profissional,
                 data_consulta);
 
-        if (data_consulta.before(daoConsulta.findAll().get(0).get_today()) ||
-                data_consulta.equals(consultas_marcadas_cliente.get(0).get_today())) {
+        if (data_consulta.before(profissionalEscolhido.get_today()) ||
+                data_consulta.equals(profissionalEscolhido.get_today())) {
             return "redirect:/clientes/apresentaMarcarConsulta1?cpf_profissional="
                     + cpf_profissional.replaceAll("\\s+", "") + "&invalidDate=true";
 

@@ -57,4 +57,8 @@ public class Profissional extends User {
     public void setCurriculo(String curriculo) {
         this.curriculo = curriculo;
     }
+
+    public Date get_today() {
+        return new Date();
+    }
 }

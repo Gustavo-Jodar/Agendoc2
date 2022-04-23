@@ -107,7 +107,4 @@ public class Consulta implements Serializable {
         this.nome_profissional = nome_profissional;
     }
 
-    public Date get_today() {
-        return new Date();
-    }
 }

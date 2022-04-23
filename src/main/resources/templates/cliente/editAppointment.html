@@ -42,12 +42,12 @@
             </div>
             <div class="link-time">
                 <div th:if="${consulta.link_meet}">
-                    <strong>Link do Google Meet para a consulta:</strong>
+                    <strong>Link Google Meet:</strong>
                     <input name="link_meet" class="link" type="url" th:value="${consulta.link_meet}">
                 </div>
                 <div th:if="!${consulta.link_meet}">
                     <form th:action="@{/clientes/edit_link}">
-                        <strong>Link do Google Meet para a consulta:</strong>
+                        <strong>Link Google Meet:</strong>
                         <input name="link_meet" class="link" type="url" th:value="${consulta.link_meet}">
                         <input name="id" th:value="${consulta.id}" type="hidden">
                         <button class="save" type="submit" th:text="#{enter_link.text}"></button>

@@ -24,30 +24,30 @@
                 </a>
             </div>
             <div class="header-content">
-                <strong> Veja sobre sua consulta</strong>
-                <span> Sempre evite desmarcar consultas de ultima hora. </span>
-                <span> Nao se atrase. </span>
-                <span> Nao se esqueca de disponibilizar o link da consulta. </span>
+                <strong th:text="#{info_appointment_see_about.text}"></strong>
+                <span th:text="#{info_appointment_rule_one.text}"></span>
+                <span th:text="#{info_appointment_rule_two.text}"></span>
+                <span th:text="#{info_appointment_rule_three.text}"></span>
             </div>
         </header>
         <div class="schedule">
             <div class="link-time">
-                <strong>Cliente:</strong>
+                <strong th:text="#{client.text}"></strong>
                 <legend th:text="${consulta.nome_cliente}"></legend>
             </div>
             <div class="link-time">
-                <strong>Data e horário da consulta:</strong>
+                <strong th:text="#{time_appointment.text}"></strong>
                 <legend th:text="${consulta.data_consulta}"></legend>-<legend th:text="${consulta.horario}"></legend>
                 h00min
             </div>
             <div class="link-time">
                 <div th:if="${consulta.link_meet}">
-                    <strong>Link do Google Meet para a consulta:</strong>
+                    <strong>Link Google Meet:</strong>
                     <input name="link_meet" class="link" type="url" th:value="${consulta.link_meet}">
                 </div>
                 <div th:if="!${consulta.link_meet}">
                     <form th:action="@{/profissionais/edit_link}">
-                        <strong>Link do Google Meet para a consulta:</strong>
+                        <strong>Link Google Meet:</strong>
                         <input name="link_meet" class="link" type="url" th:value="${consulta.link_meet}">
                         <input name="id" th:value="${consulta.id}" type="hidden">
                         <button class="save" type="submit" th:text="#{enter_link.text}"></button>

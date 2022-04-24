@@ -125,6 +125,21 @@ public class userController {
             return "redirect:users/salvarProfissional";
         }
 
+        String area = profissional.getArea();
+        if (area.substring(0, 1).equals("1"))
+            area = "MEDICINA";
+        if (area.substring(0, 1).equals("2"))
+            area = "ADVOCACIA";
+        if (area.substring(0, 1).equals("3"))
+            area = "PSICOLOGIA";
+        if (area.substring(0, 1).equals("4"))
+            area = "EDUCACAO";
+        if (area.substring(0, 1).equals("5"))
+            area = "NUTRICAO";
+        if (area.substring(0, 1).equals("6"))
+            area = "TERAPIA";
+        profissional.setArea(area);
+
         startDateStrNascimento = startDateStrNascimento.replace('/', '-');
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date nascimento = sdf.parse(startDateStrNascimento);

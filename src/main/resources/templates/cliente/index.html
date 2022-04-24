@@ -51,9 +51,11 @@
                         </div>
                     </header>
 
-                    <p th:text="#{appointment_schedule_for.text}"></p><label
-                        th:text="${consulta.data_consulta}"></label>
-                    <p th:text="#{time.text}"></p><label th:text="${consulta.horario}"></label>:00 de Brasilia
+                    <p th:text="#{appointment_schedule_for.text}"></p>
+                    <p th:text="${consulta.data_consulta}"></p>
+                    <div style="display: flex;margin-left: 3rem;"> <p th:text="#{time.text}"></p> 
+                        <p th:text="${consulta.horario}"></p><p>:00 de Brasilia</p> 
+                    </div>
                     <footer>
                         </p>
                         <a class="button" th:href="@{/clientes/apresentaConsulta?(id=${consulta.id})}"

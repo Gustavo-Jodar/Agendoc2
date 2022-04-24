@@ -29,6 +29,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
 @Controller
 @RequestMapping("/clientes")
 public class clienteController {
@@ -44,6 +51,10 @@ public class clienteController {
 
     @Autowired
     daoConsulta daoConsulta;
+
+    @Autowired
+    JavaMailSender mailSender;
+
 
     @GetMapping("/showIndex")
     public String index(Model model, Principal principal) {
@@ -188,21 +199,41 @@ public class clienteController {
     }
 
     @PostMapping("/cadastraConsulta")
-    public String cadastraConsulta(Model model, Consulta consulta, @Param("horario") Integer horario) {
+    public String cadastraConsulta(Model model, Consulta consulta, Principal principal, @Param("horario") Integer horario) {
         List<Consulta> todas_consultas = daoConsulta.findAll();
-        Integer maior = todas_consultas.get(0).getId();
-        for (Consulta c : todas_consultas) {
-            if (c.getId() > maior) {
-                maior = c.getId();
+        Integer maior = 0;
+        if (todas_consultas.size() != 0) {
+            maior = todas_consultas.get(0).getId();
+            for (Consulta c : todas_consultas) {
+                if (c.getId() > maior) {
+                    maior = c.getId();
+                }
             }
-        }
+        }    
         consulta.setCpf_cliente(consulta.getCpf_cliente().replaceAll("\\s+", ""));
         consulta.setCpf_profissional(consulta.getCpf_profissional().replaceAll("\\s+", ""));
 
         consulta.setId(maior + 1);
         daoConsulta.save(consulta);
 
+        SimpleMailMessage message = new SimpleMailMessage();
+        String emailProfissional = daoProfissional.findByCpf(consulta.getCpf_profissional()).getEmail();
+        System.out.println(emailProfissional);
+        String emailCliente = principal.getName();
+        //String toUser = emailProfissional + ", " + emailCliente;
+        message.setTo(emailProfissional, emailCliente);
+
+        message.setSubject("Sua consulta do agendoc foi marcada!");
+        message.setText("Olá " + consulta.getNome_cliente() + "\n"
+        + "Seguem as informacoes a respeito de sua consulta: \n Profissional: "
+        + consulta.getNome_profissional() + "\n Data e hora de sua consulta: "
+        + consulta.getData_consulta() + " " + consulta.getHorario() + "h00min" + "\n Na data e hora da consulta entre neste link:" 
+        + consulta.getLink_meet() + "\n \n Qualquer coisa estamos aqui! \n Atenciosamente Agendoc.");
+        
+        mailSender.send(message);
+
         return "redirect:/clientes/showIndex";
+
     }
 
 }

@@ -27,12 +27,9 @@
             <div class="header-content">
                 <strong th:text="#{make_appointment_with.text}"></strong><strong
                     th:text=" ${profissionalEscolhido.nome}"></strong>
-                <span>Area: <span th:text=" ${profissionalEscolhido.area}"></span></span>
-                <span th:text="#{speciality.text}"> <span th:text=" ${profissionalEscolhido.especialidade}"> </span>
-                </span>
-                <p th:text="#{bio.text}">:
-                <p th:text=" ${profissionalEscolhido.bio}"></p>
-                </p>
+                <span th:text=" ${profissionalEscolhido.area}"></span>
+                <span th:text=" ${profissionalEscolhido.especialidade}"></span>
+                <span th:text=" ${profissionalEscolhido.bio}"></span>
                 <!-- aqui teria que de alguma forma ter os dados do profissional com quem estou marcando -->
             </div>
         </header>
